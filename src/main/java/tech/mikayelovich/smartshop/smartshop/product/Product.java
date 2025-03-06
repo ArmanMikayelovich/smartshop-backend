@@ -41,6 +41,7 @@ public class Product {
     @Positive(message = "Price must be positive")
     private Double price;
 
+    @Column(nullable = false)
     private boolean available = true;
 
     @ManyToOne

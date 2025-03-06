@@ -1,8 +1,10 @@
 package tech.mikayelovich.smartshop.smartshop.product;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,5 +55,24 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public List<Product> getAllAvailableProducts() {
+        return productRepository.findByAvailableTrueOrderByNameAsc();
+    }
+
+    public List<Product> getProductsByCategory(Long categoryId) {
+        // Optional: Validate category exists
+        categoryService.getCategoryById(categoryId)
+            .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        return productRepository.findByCategoryId(categoryId);
+    }
+
+    public List<Product> searchProducts(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        return productRepository.fullTextSearch(query.trim());
     }
 }
