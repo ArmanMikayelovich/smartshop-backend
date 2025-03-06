@@ -22,7 +22,7 @@ public class DtoMapper {
     }
 
     public static ProductDetailsResponse mapToDetailsResponse(Product product) {
-        return new ProductDetailsResponse(
+        ProductDetailsResponse productDetailsResponse = new ProductDetailsResponse(
             product.getId(),
             product.getName(),
             product.getDescription(),
@@ -32,6 +32,7 @@ public class DtoMapper {
                 .collect(Collectors.toList()),
             product.getCategory() != null ? product.getCategory().getName() : null, product.isAvailable()
         );
+        return productDetailsResponse;
     }
 
     public static CategoryResponse mapToCategoryResponse(Category category) {
